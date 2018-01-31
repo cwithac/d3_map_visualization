@@ -25,7 +25,10 @@ d3.queue()
     const width = 960;
     const height = 600;
 
-    const path = d3.geoPath();
+    const projection = d3.geoMercator();
+
+    const path = d3.geoPath()
+                    .projection(projection);
 
     d3.select('svg')
         .attr('width', width)
