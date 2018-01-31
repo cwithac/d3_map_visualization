@@ -1,3 +1,4 @@
+//Gather Data
 d3.queue()
   .defer(d3.json, '//unpkg.com/world-atlas@1.1.4/world/50m.json')
   .defer(d3.csv, './country_data.csv', function(row) {
@@ -18,6 +19,22 @@ d3.queue()
     populationData.forEach(row => {
       const countries = geoData.filter(d => d.id === row.countryCode);
       countries.forEach(country => country.properties = row);
-      debugger
     });
+
+//Generate Map
+    const width = 960;
+    const height = 600;
+
+    const path = d3.geoPath();
+
+    d3.select('svg')
+        .attr('width', width)
+        .attr('height', height)
+      .selectAll('.country')
+      .data(geoData)
+      .enter()
+        .append('path')
+        .classed('country', true)
+        .attr('d', path);
+
   });
