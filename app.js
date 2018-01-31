@@ -25,7 +25,9 @@ d3.queue()
     const width = 960;
     const height = 600;
 
-    const projection = d3.geoMercator();
+    const projection = d3.geoMercator()
+                          .scale(125)
+                          .translate([width / 2, height / 1.4]);
 
     const path = d3.geoPath()
                     .projection(projection);
