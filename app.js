@@ -50,6 +50,8 @@ d3.queue()
       select
         .on('change', d => setColor(d3.event.target.value));
 
+        setColor(select.property('value')); //page load invocation
+
         function setColor(val) {
           const colorRanges = {
             population: ['white', 'purple'],
