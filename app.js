@@ -25,6 +25,7 @@ d3.queue()
     const width = 960;
     const height = 600;
 
+    //https://github.com/d3/d3-geo/blob/master/README.md#projections
     const projection = d3.geoMercator()
                           .scale(125)
                           .translate([width / 2, height / 1.4]);
@@ -32,6 +33,7 @@ d3.queue()
     const path = d3.geoPath()
                     .projection(projection);
 
+    //map
     d3.select('svg')
         .attr('width', width)
         .attr('height', height)
@@ -41,5 +43,33 @@ d3.queue()
         .append('path')
         .classed('country', true)
         .attr('d', path);
+
+    //colors
+      const select = d3.select('select');
+
+      select
+        .on('change', d => setColor(d3.event.target.value));
+
+        function setColor(val) {
+          const colorRanges = {
+            population: ['white', 'purple'],
+            populationDensity: ['white', 'red'],
+            medianAge: ['white', 'black'],
+            fertilityRate: ['black', 'orange']
+          };
+
+          const scale = d3.scaleLinear()
+                          .domain([0, d3.max(populationData, d => d[val])])
+                          .range(colorRanges[val]);
+
+          d3.selectAll('.country')
+              .transition()
+              .duration(750)
+              .ease(d3.easeBackIn)
+              .attr('fill', d => {
+                const data = d.properties[val];
+                return data ? scale(data) : '#ccc';
+              });
+        }
 
   });
